@@ -16,57 +16,33 @@ $.fn.trivia = function() {
         answers: ["Athena", "Iris", "Aphrodite", "Hera"],
         correct: 1
     }, {
-        question: "",
-        answers: [],
+        question: "In ancient Athens, what tree was considered sacred -- with all its fruit belonging to the state, and death the penalty for anyone caught cutting one down?",
+        answers: ["The Olive Tree", "The Apple Tree", "The Orange Tree", "The Lemon Tree"],
+        correct: 0
+    }, {
+        question: "What legendary fire-breathing female monster had a lion's head, a goat's body and a dragon's tail?",
+        answers: ["The Manicore", "The Centurion", "Cerberus", "The Chimera"],
+        correct: 3
+    }, {
+        question: "According to legend, who fired the arrow that hit Achilles in the heel, his only vulnerable spot?",
+        answers: ["Paris", "Hercules", "Hades", "Dante"],
+        correct: 0
+    }, {
+        question: "In Greek mythology, who were Arges, Brontes and Steropes?",
+        answers: ["Titans", "Centaur", "Cyclopes", "Demi-Gods"],
+        correct: 2
+    }, {
+        question: "In Greek mythology, who was the queen of the underworld and wife of Hades?",
+        answers: ["Aphrodite", "Cybele", "Hestia", "Persephone"],
+        correct: 3
+    }, {
+        question: "Who was the ancient Greek god of dreams?",
+        answers: ["Romulous", "Morpheus", "Hades", "Hypnos"],
         correct: 1
     }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
-    }, {
-        question: "",
-        answers: [],
-        correct: 1
+        question: "According to classical mythology, who was the first mortal woman?",
+        answers: ["Jocasta", "Iole", "Hilaeira", "Pandora"],
+        correct: 3
     }];
     t.ask = function () {
         if(t.gameTrivia[t.current]){
@@ -122,12 +98,12 @@ $.fn.trivia = function() {
     t.cleanUp = function() {
         $(".choices-here").html("");
         $(".correct").html("Correct: " + t.answers.correct);
-        $(".incorrect").html("Incorrect: " + t.answers.correct);
+        $(".incorrect").html("Incorrect: " + t.answers.incorrect);
     };
     t.answer = function(correct) {
         var string = correct ? "correct" : "incorrect";
         t.answers[string]++;
-        $("." + string).html(string + " answers: " + t.answers[string]);
+        $("." + string).html(string + ": " + t.answers[string]);
     };
 
     return t;
@@ -144,17 +120,19 @@ $("#start_button").click(function(event) {
     Trivia = new $(window).trivia();
     Trivia.ask();
 });
+ $(document).ready(function(){
+     $(":input:radio").parent("input").addClass("active");
+ })
 
-
-$("button #submit").on("click", function(event){
+$("#submit").click(function(event){
     event.preventDefault();
-    alert($("#triviaForm input[name='answer']:checked").val())
-    var userPick = $("#triviaForm input[name='answer']:checked").val(),
+    var activeRadio = $('input:radio:checked');
+    var userPick = activeRadio.val(),
     t = Trivia || $(window).trivia(),
     index = t.gameTrivia[t.current].correct,
-    correct = t.gameTrivia[t.current].choices[index];
-
-    if (userPick !== index) {
+    correct = t.gameTrivia[t.current].answers[index];
+    console.log(activeRadio.val());
+    if (userPick != index) {
         $(".choices-here").text("Wrong Answer! Correct Answer: " + correct);
         t.answer(false);
     } else {
